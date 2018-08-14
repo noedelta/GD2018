@@ -1,0 +1,108 @@
+% This is samplepaper.tex, a sample chapter demonstrating the
+% LLNCS macro package for Springer Computer Science proceedings;
+% Version 2.20 of 2017/10/04
+%
+\documentclass[runningheads]{llncs}
+%
+\usepackage{graphicx}
+% Used for displaying a sample figure. If possible, figure files should
+% be included in EPS format.
+%
+% If you use the hyperref package, please uncomment the following line
+% to display URLs in blue roman font according to Springer's eBook style:
+% \renewcommand\UrlFont{\color{blue}\rmfamily}
+
+\begin{document}
+%
+\title{Visualizing molecule networks online, a level of detail approach}
+%
+%\titlerunning{Abbreviated paper title}
+% If the paper title is too long for the running head, you can set
+% an abbreviated paper title here
+%
+\author{Noemi del-Toro\inst{1}\orcidID{0000-0001-5272-7613}\email{ntoro@ebi.ac.uk} \and
+Elisabet Barrera\inst{1}\orcidID{0000-0002-7245-9692} \and
+Colin Combe\inst{2}\and
+Margaret Duesbury\inst{1}\orcidID{0000-0002-4904-1247} \and
+Birgit Meldal\inst{1}\orcidID{0000-0003-4062-6158} \and
+Livia Perfetto\inst{1}\orcidID{0000-0003-4392-8725} \and
+Anjali Shrivastava\inst{1}\orcidID{0000-0002-7471-2663} \and
+Sandra Orchard\inst{1}\orcidID{0000-0002-8878-3972} \and
+Henning Hermjakob\inst{1}\orcidID{0000-0001-8479-0262} \and
+Pablo Porras\inst{1}\orcidID{0000-0002-8429-8793} \email{pporras@ebi.ac.uk}}
+%
+\authorrunning{N. del-Toro et al.}
+% First names are abbreviated in the running head.
+% If there are more than two authors, 'et al.' is used.
+%
+\institute{European Bioinformatics Institute (EMBL-EBI), European Molecular Biology Laboratory, Wellcome Genome Campus , Hinxton, Cambridgeshire, CB10 1SD, UK \and
+Wellcome Trust Centre for Cell Biology, School of Biological Sciences, University of Edinburgh, Edinburgh EH9 3BF, UK}
+%
+\maketitle              % typeset the header of the contribution
+%
+\begin{abstract}
+Traditionally, biological networks define graphs of high density. Classical force-directed layout algorithms tend to create hairballs. In this poster we present a case study of how to visualize molecule networks online avoiding, when possible, the high density networks by offering different levels of detail to the user.
+
+\keywords{Interactions \and Networks \and Graph Visualization.}
+\end{abstract}
+%
+%
+%
+\section{Introduction}
+Biological systems are often represented as networks which are complex sets of binary interactions or relations between different entities. Essentially, every biological entity has interactions with other biological entities.
+
+At the same time the study of these networks has revealed that they are highly connected (the network's diameter is small, no matter how big the network is) and they have a small number of nodes with high degree of connectivity (the hubs) and a large number of nodes with low degree. Visualizing such networks often results in 'hairball' effects when networks become large.
+
+IntAct~\cite{ref_article4} is a central, public repository where molecular interactions data can be stored and accessed. It is hosted by the European Bioinformatics Institute (EMBL-EBI) in Hinxton, UK, where it is maintained by a group of curators and developers. 
+
+During the redesign of the website, user testing suggested that users want to be able to visualize large networks even if the human brain is not able to process the information contained as well as the fine details of interactions. Due to these requirements the presented strategy based on different levels of detail will be tested in future prototypes.
+
+\section{Overview Network}
+To cope with a query resulting in more than 20,000 interactions we have designed an approach that will generate the layout of interactomes (e.g. the whole set of molecular interactions for human proteins) offline onto which we will overlay the results.
+
+Shingle~\cite{ref_url1} is designed to publish large interactive graphs online. It consists of two parts: an offline tool that divides a large network graph into tiles stored in Json files, and a JavaScript library that loads these tiles when in view and inserts and removes them from the Document Object Model (DOM) of a single SVG element. Shingle currently does not offer facilities for creating layouts. We have used Gephi~\cite{ref_proc1} software with a combination of different layout algorithms (OpenOrd, Multigravity Force Atlas 2 and Noverlap) to create our interactomes as the input for Shingle.
+
+The interactivity of the network will be very limited in order to cope with the high demand of nodes, but at least zoom effects and search capabilities inside the network look feasible at this stage. 
+
+\section{Medium Network}
+For a query resulting in 100 to 20,000 interactions, the network will be calculated 'on the fly' displaying only the results of the query.
+After assessing several technologies we chose D3.js ~\cite{ref_article5,ref_url2} for the implementation of medium size networks. D3 (Data-Driven Documents) is a JavaScript library that allows binding of arbitrary data to a DOM, and then applies data-driven transformations to the document. It provides force-directed graph layout and allows high interactivity with the network (selection, dragging, zooming, etc.).
+
+\section{Low-level Detail Network}
+The low-level details of an interaction requires a visualization that can accurately represent the following aspects: interactions with more than two participants (n-ary interactions); sequence features relevant to the interaction, such as binding domains; a range of biomolecules as interactor types (proteins, small molecules, nucleic acids); discontinuous sequence features and stoichiometry information. ComplexViewer~\cite{ref_article1} meets these needs and provides 2D diagrams of complex topologies. Designed for the Complex Portal~\cite{ref_article3}, it can be reused with the same functionally for IntAct, too.
+
+\subsubsection{Acknowledgments}{This work has been supported by the Biotechnology and Biological Sciences Research Council under the MIDAS (BB/L024179/1) grant, by EMBL-EBI core funding and Open Targets.}
+
+%
+% ---- Bibliography ----
+%
+% BibTeX users should specify bibliography style 'splncs04'.
+% References will then be sorted and formatted in the correct style.
+%
+% \bibliographystyle{splncs04}
+% \bibliography{mybibliography}
+%
+\begin{thebibliography}{7}
+\bibitem{ref_article4}
+Licata, L., Orchard, S.: The MIntAct Project and Molecular Interaction Databases. Methods Mol Biol \textbf{1415} 55--69 (2016) \doi{10.1007/978-1-4939-3572-7{\_}3}
+
+\bibitem{ref_url1}
+Shingle.js Homepage, \url{https://www.ayalpinkus.nl/shinglejs/index.html} Last accessed 13 Aug 2018
+
+\bibitem{ref_proc1}
+Bastian, M., Heymann, S., and Mathieu Jacomy, M.: Gephi: An Open Source Software for Exploring and Manipulating Networks. In:  3rd International ICWSM Conference on Proceedings, pp. 361--362. California (2009)
+
+\bibitem{ref_article5}
+Bostock, M., Ogievetsky, V., Heer, J.: D³ Data-Driven Documents. IEEE Transactions on Visualization and Computer Graphics \textbf{17}(12) 2301--2309 (2011) \doi{10.1109/TVCG.2011.185}
+
+\bibitem{ref_url2}
+D3.js Homepage, \url{https://d3js.org/} Last accessed 13 Aug 2018
+
+\bibitem{ref_article1}
+Combe, CW., Sivade, MD., Hermjakob, H., Heimbach, J., Meldal, BHM., Micklem, G., Orchard, S., Rappsilber, J.: ComplexViewer: visualization of curated macromolecular complexes. Bioinformatics \textbf{33}(22) 3673--3675 (2017) \doi{10.1093/bioinformatics/btx497}
+
+\bibitem{ref_article3}
+Meldal, BH., Forner-Martinez, O., Costanzo, MC., Dana, J., Demeter, J., Dumousseau, M., Dwight, SS., Gaulton, A., Licata, L., Melidoni, AN., Ricard-Blum, S., Roechert, B., Skyzypek, MS., Tiwari, M., Velankar, S., Wong, ED., Hermjakob, H., Orchard, S.: The complex portal--an encyclopaedia of macromolecular complexes. Nucleic Acids Res \textbf{43}(Database issue) D479--84 (2015) \doi{doi:10.1093/nar/gku975}
+
+\end{thebibliography}
+\end{document}
